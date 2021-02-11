@@ -1,13 +1,31 @@
 {
   "name": "angular-vscode",
+  "description": "Angular VSCode",
   "version": "0.0.0",
+  "engines": {"vscode": "^1.22.0"},
+  "main": "./dist/extension/extension.js",
+  "publisher": "Yau",
+  "contributes": {
+    "commands": [
+      {
+      "command": "angular-vscode.start",
+      "title": "Angular Web-view",
+      "category": "Angular"
+      }
+    ]
+  },
+  "activationEvents": [
+    "onCommand:angular-vscode.start"
+  ],
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --prod --output-hashing none && tsc -p tsconfig.extension.json",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "package": "vsce package",
+    "vscode:prepublish": "npm run build && tsc -p tsconfig.extension.json"
   },
   "private": true,
   "dependencies": {
@@ -29,6 +47,7 @@
     "@angular/compiler-cli": "~11.1.2",
     "@types/jasmine": "~3.6.0",
     "@types/node": "^12.11.1",
+    "@types/vscode": "^1.53.0",
     "codelyzer": "^6.0.0",
     "jasmine-core": "~3.6.0",
     "jasmine-spec-reporter": "~5.0.0",
@@ -40,6 +59,8 @@
     "protractor": "~7.0.0",
     "ts-node": "~8.3.0",
     "tslint": "~6.1.0",
-    "typescript": "~4.1.2"
+    "typescript": "~4.1.2",
+    "vsce": "^1.85.0",
+    "vscode-test": "^1.5.0"
   }
 }

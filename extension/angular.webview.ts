@@ -29,11 +29,11 @@ export class AngularWebview {
         this.panel.webview.html = this.getHtml();
     }
 
-    public reveal = () => {
+    public reveal() {
         this.panel.reveal(this.column);
     }
 
-    private getHtml = ():string => {
+    private getHtml():string {
 
         const dist = vscode.Uri.file(
             path.join(

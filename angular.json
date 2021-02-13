@@ -6,7 +6,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "angular-vscode": {
+    "database-browser": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -72,18 +72,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "angular-vscode:build"
+            "browserTarget": "database-browser:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "angular-vscode:build:production"
+              "browserTarget": "database-browser:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "angular-vscode:build"
+            "browserTarget": "database-browser:build"
           }
         },
         "test": {
@@ -121,16 +121,16 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "angular-vscode:serve"
+            "devServerTarget": "database-browser:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "angular-vscode:serve:production"
+              "devServerTarget": "database-browser:serve:production"
             }
           }
         }
       }
     }
   },
-  "defaultProject": "angular-vscode"
+  "defaultProject": "database-browser"
 }

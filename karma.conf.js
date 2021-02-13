@@ -25,7 +25,7 @@ module.exports = function (config) {
       suppressAll: true // removes the duplicated traces
     },
     coverageReporter: {
-      dir: require('path').join(__dirname, './coverage/angular-vscode'),
+      dir: require('path').join(__dirname, './coverage/database-browser'),
       subdir: '.',
       reporters: [
         { type: 'html' },

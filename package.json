@@ -1,5 +1,5 @@
 {
-  "name": "angular-vscode",
+  "name": "database-browser",
   "description": "Angular VSCode",
   "version": "0.0.0",
   "engines": {
@@ -10,14 +10,14 @@
   "contributes": {
     "commands": [
       {
-        "command": "angular-vscode.start",
+        "command": "database-browser.start",
         "title": "Angular Web-view",
         "category": "Angular"
       }
     ]
   },
   "activationEvents": [
-    "onCommand:angular-vscode.start"
+    "onCommand:database-browser.start"
   ],
   "scripts": {
     "ng": "ng",

@@ -44,7 +44,7 @@ export abstract class DbTableSchemaProvider {
     protected abstract getForiegnKeys(): Promise<DbForeignKeyDetails[]>
 
     private associateTableForeignKeys(tables: DbTableSchema[], foreignKeys: DbForeignKeyDetails[], options: DbGetTablesOptions): DbTableSchema[] {
-        
+       
 
         foreignKeys.forEach(fk => {
             const to = tables.find(_ => _.name.schema == fk.to.schema && _.name.name == fk.to.name);
@@ -53,7 +53,7 @@ export abstract class DbTableSchemaProvider {
                 options.onIssue?.emit(
                     new Issue(
                         IssueType.CANT_FIND_FOREIGN_KEY_TO_TABLE, 
-                        fk.to))
+                        fk.to));
 
                 return;
             }

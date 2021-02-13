@@ -1,11 +1,12 @@
 import { ColumnType, DbTableColumn } from "../models/db-table-column";
+import { DbTableSchemaProvider, Issue, IssueType } from "./db-table-schema-provider";
 
 import { DbConfig } from "../models/db-config";
 import { DbForeignKeyDetails } from "../models/db-foreign-key-details";
 import { DbTableForeignKeyMap } from "../models/db-table-foreign-key";
 import { DbTableName } from "../models/db-table-name";
 import { DbTableSchema } from "../models/db-table-schema";
-import { DbTableSchemaProvider } from "./db-table-schema-provider";
+import { EventEmitter } from "@angular/core";
 
 class MockDbTableSchemaProvider extends DbTableSchemaProvider {
   protected getTableSchemas(): Promise<DbTableSchema[]> {
@@ -51,6 +52,13 @@ class MockDbTableSchemaProvider extends DbTableSchemaProvider {
           new DbTableName("dbo", "trips"), 
           new DbTableName("dbo", "locations"), 
           [ new DbTableForeignKeyMap(new DbTableColumn("locationId", ColumnType.NUMBER),  new DbTableColumn("id", ColumnType.NUMBER)) ]
+        ),
+
+        new DbForeignKeyDetails(
+          "fk_departmentUsers_users", 
+          new DbTableName("dbo", "departmentUsers"), 
+          new DbTableName("dbo", "users"), 
+          [ new DbTableForeignKeyMap(new DbTableColumn("userId", ColumnType.NUMBER),  new DbTableColumn("id", ColumnType.NUMBER)) ]
         ),
       ]
     );
@@ -117,5 +125,41 @@ describe('DbTableSchemaProvider', () => {
     expect(tables[1].foreignKeys[0].toTable.name.name).toBe("users");
     expect(tables[1].foreignKeys[0].key[0].from.name).toBe("userId");
     expect(tables[1].foreignKeys[0].key[0].to.name).toBe("id");
+  });
+
+  it('should emmit issues when fk missing to table', async () => {
+    const onIssue = new EventEmitter<Issue>();
+    spyOn(onIssue, "emit");
+
+    await sut.getTables({ onIssue });
+
+    expect(onIssue.emit).toHaveBeenCalledWith(jasmine.objectContaining({
+      issueType: IssueType.CANT_FIND_FOREIGN_KEY_TO_TABLE,
+      tableName: jasmine.objectContaining(
+        {
+          schema: "dbo",
+          name: "locations"
+        }
+      )
+    }));
+
+  });
+
+  it('should emmit issues when fk missing from table', async () => {
+    const onIssue = new EventEmitter<Issue>();
+    spyOn(onIssue, "emit");
+
+    await sut.getTables({ onIssue });
+
+    expect(onIssue.emit).toHaveBeenCalledWith(jasmine.objectContaining({
+      issueType: IssueType.CANT_FIND_FOREIGN_KEY_FROM_TABLE,
+      tableName: jasmine.objectContaining(
+        {
+          schema: "dbo",
+          name: "departmentUsers"
+        }
+      )
+    }));
+
   });
 });

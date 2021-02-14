@@ -1,0 +1,7 @@
+<p>db-browser-page works!</p>
+
+<mat-card *ngIf="dbConfig">
+    <mat-card-title>{{dbConfig.name}}</mat-card-title>
+    <mat-card-subtitle>{{dbConfig.dbType}}</mat-card-subtitle>
+    {{dbConfig.connectionString}}
+</mat-card>

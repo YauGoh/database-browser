@@ -1,7 +1,7 @@
 import { ColumnType, DbTableColumn } from "../models/db-table-column";
+import { DbConfig, DbType } from "../models/db-config";
 import { DbTableSchemaProvider, Issue, IssueType } from "./db-table-schema-provider";
 
-import { DbConfig } from "../models/db-config";
 import { DbForeignKeyDetails } from "../models/db-foreign-key-details";
 import { DbTableForeignKeyMap } from "../models/db-table-foreign-key";
 import { DbTableName } from "../models/db-table-name";
@@ -66,18 +66,22 @@ class MockDbTableSchemaProvider extends DbTableSchemaProvider {
   
 }
 
-const config: DbConfig = {};
+const config: DbConfig = {
+  name: "Sample",
+  dbType: DbType.SAMPLE,
+  connectionString: "Sample Connection String"
+};
 
 describe('DbTableSchemaProvider', () => {
   let sut: MockDbTableSchemaProvider;
 
   beforeEach(() => {
-    sut = new MockDbTableSchemaProvider(config);
+    sut = new MockDbTableSchemaProvider();
 
   });
 
   it('should return tables with foreign key associations', async () => {
-    const tables = await sut.getTables();
+    const tables = await sut.getTables(config);
 
     // users
     expect(tables[0].name.schema).toBe("dbo");
@@ -131,7 +135,7 @@ describe('DbTableSchemaProvider', () => {
     const onIssue = new EventEmitter<Issue>();
     spyOn(onIssue, "emit");
 
-    await sut.getTables({ onIssue });
+    await sut.getTables(config, { onIssue });
 
     expect(onIssue.emit).toHaveBeenCalledWith(jasmine.objectContaining({
       issueType: IssueType.CANT_FIND_FOREIGN_KEY_TO_TABLE,
@@ -149,7 +153,7 @@ describe('DbTableSchemaProvider', () => {
     const onIssue = new EventEmitter<Issue>();
     spyOn(onIssue, "emit");
 
-    await sut.getTables({ onIssue });
+    await sut.getTables(config, { onIssue });
 
     expect(onIssue.emit).toHaveBeenCalledWith(jasmine.objectContaining({
       issueType: IssueType.CANT_FIND_FOREIGN_KEY_FROM_TABLE,
@@ -160,6 +164,12 @@ describe('DbTableSchemaProvider', () => {
         }
       )
     }));
-
   });
+
+  it('foreign keys should reference actual tables.', async() => {
+    const tables = await sut.getTables(config);
+
+    expect(tables[0].foreignKeys[0].toTable).toBe(tables[1]);
+    expect(tables[1].foreignKeys[0].toTable).toBe(tables[0]);
+  })
 });

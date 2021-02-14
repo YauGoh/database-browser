@@ -7,7 +7,6 @@ import { EventEmitter } from "@angular/core";
 
 interface DbGetTablesOptions {
     onIssue?: EventEmitter<Issue>;
-
 }
 
 export class Issue {
@@ -23,13 +22,7 @@ export enum IssueType {
 }
 
 export abstract class DbTableSchemaProvider {
-    
-    constructor(protected config: DbConfig) 
-    {
-        
-    }
-
-    getTables(options: DbGetTablesOptions = {}): Promise<DbTableSchema[]> {
+    getTables(config: DbConfig, options: DbGetTablesOptions = {}): Promise<DbTableSchema[]> {
         return Promise
             .all([ this.getTableSchemas(), this.getForiegnKeys() ])
             .then(result => {
@@ -44,8 +37,6 @@ export abstract class DbTableSchemaProvider {
     protected abstract getForiegnKeys(): Promise<DbForeignKeyDetails[]>
 
     private associateTableForeignKeys(tables: DbTableSchema[], foreignKeys: DbForeignKeyDetails[], options: DbGetTablesOptions): DbTableSchema[] {
-       
-
         foreignKeys.forEach(fk => {
             const to = tables.find(_ => _.name.schema == fk.to.schema && _.name.name == fk.to.name);
 

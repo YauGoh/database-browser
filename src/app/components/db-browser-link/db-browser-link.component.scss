@@ -6,9 +6,12 @@
         width: 100%;
         height: 100%;
 
+        path,
         line {
             stroke: black;
-            stroke-width: 1px;
+            stroke-linejoin: round;
+
+            fill: none;
         }
     }
 }

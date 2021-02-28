@@ -14,6 +14,7 @@ import { PositionPipe } from "./pipes/position.pipe";
 import { PrimaryKeyPipe } from "./pipes/primary-key.pipe";
 import { WelcomePageComponent } from "./welcome-page/welcome-page.component";
 import { DbBrowserLinkComponent } from './components/db-browser-link/db-browser-link.component';
+import { PathPipe } from './pipes/path.pipe';
 
 @NgModule({
     declarations: [
@@ -26,6 +27,7 @@ import { DbBrowserLinkComponent } from './components/db-browser-link/db-browser-
         PositionPipe,
         PrimaryKeyPipe,
         DbBrowserLinkComponent,
+        PathPipe,
     ],
     imports: [
         AppRoutingModule,

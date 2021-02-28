@@ -56,7 +56,7 @@ export class DbBrowserLayoutService {
             i++;
         }
 
-        return { items, links: links };
+        return { items, links };
     }
 
     private layoutColumnOfTables(

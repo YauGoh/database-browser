@@ -19,6 +19,7 @@ export class DbBrowserForeignKey extends DbBrowser {
     private _previews: DbBrowserEntityPreview[];
 
     constructor(
+        readonly source: DbBrowser,
         private readonly _parent: DbEntity,
         readonly foreignKey: DbTableForeignKey,
         private readonly browsingService: DbBrowsingService
@@ -71,7 +72,12 @@ export class DbBrowserForeignKey extends DbBrowser {
             );
 
             this._previews = dbEntities.map(
-                (e) => new DbBrowserEntityPreview(e, this.browsingService)
+                (e) =>
+                    new DbBrowserEntityPreview(
+                        this.source,
+                        e,
+                        this.browsingService
+                    )
             );
             this._isPoupulated = true;
         }

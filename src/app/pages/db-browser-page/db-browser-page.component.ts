@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
+import { DbBrowser, Link } from "../../models/db-browser";
 
 import { ActivatedRoute } from "@angular/router";
-import { DbBrowser } from "../../models/db-browser";
 import { DbBrowserLayoutService } from "../../services/db-browser-layout.service";
 import { DbBrowserTable } from "src/app/models/db-browser-table";
 import { DbBrowsingService } from "../../database/services/db-browsing.service";
@@ -21,6 +21,7 @@ export class DbBrowserPageComponent implements OnInit {
     dbConfig: DbConfig | undefined = undefined;
     tables: DbBrowserTable[] | undefined;
     browserItems: DbBrowser[] = [];
+    browserLinks: Link[] = [];
 
     showParameterError: boolean = false;
     showMissingConfig: boolean = false;
@@ -69,7 +70,10 @@ export class DbBrowserPageComponent implements OnInit {
             const queryService = this.queryServiceFactory.get(dbConfig);
             this.browsingService.useQueryService(queryService);
 
-            this.browserItems = this.layoutService.layout(this.tables);
+            const layoutResult = this.layoutService.layout(this.tables);
+
+            this.browserItems = layoutResult.items;
+            this.browserLinks = layoutResult.links;
         } catch (error) {
             this.notify.error("Unhandled error occurred");
         }
@@ -88,7 +92,10 @@ export class DbBrowserPageComponent implements OnInit {
 
         if (!this.tables) return;
 
-        this.browserItems = this.layoutService.layout(this.tables);
+        const layoutResult = this.layoutService.layout(this.tables);
+
+        this.browserItems = layoutResult.items;
+        this.browserLinks = layoutResult.links;
 
         console.log("updated", this.browserItems);
     }

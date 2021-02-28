@@ -46,7 +46,7 @@ export class DbBrowserTable extends DbBrowser {
             );
 
             this._previews = dbEntities.map(
-                (e) => new DbBrowserEntityPreview(e, this.browsingService)
+                (e) => new DbBrowserEntityPreview(this, e, this.browsingService)
             );
             this._isPopulated = true;
         }

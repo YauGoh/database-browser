@@ -1,0 +1,7 @@
+<div class="db-browser-link" *ngIf="link" [ngStyle]="rectangle | position">
+    <svg>
+        <line [attr.x1]="link.a.x" [attr.y1]="link.a.y" [attr.x2]="link.turnA.x" [attr.y2]="link.turnA.y" />
+        <line [attr.x1]="link.turnA.x" [attr.y1]="link.turnA.y" [attr.x2]="link.turnB.x" [attr.y2]="link.turnB.y" />
+        <line [attr.x1]="link.turnB.x" [attr.y1]="link.turnB.y" [attr.x2]="link.b.x" [attr.y2]="link.b.y" />
+    </svg>
+</div>

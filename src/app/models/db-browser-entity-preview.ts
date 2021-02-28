@@ -16,6 +16,7 @@ export class DbBrowserEntityPreview extends DbBrowser {
     private _browserEntity: DbBrowserEntity | undefined;
 
     constructor(
+        readonly source: DbBrowser,
         readonly _entity: DbEntity,
         private readonly browsingService: DbBrowsingService
     ) {
@@ -41,6 +42,8 @@ export class DbBrowserEntityPreview extends DbBrowser {
             await this.browsingService.populateEntity(this._entity);
 
             this._browserEntity = new DbBrowserEntity(
+                this.source,
+                this,
                 this._entity,
                 this.browsingService
             );

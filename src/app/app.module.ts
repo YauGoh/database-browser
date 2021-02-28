@@ -13,6 +13,7 @@ import { NotifyService } from "./notify.service";
 import { PositionPipe } from "./pipes/position.pipe";
 import { PrimaryKeyPipe } from "./pipes/primary-key.pipe";
 import { WelcomePageComponent } from "./welcome-page/welcome-page.component";
+import { DbBrowserLinkComponent } from './components/db-browser-link/db-browser-link.component';
 
 @NgModule({
     declarations: [
@@ -24,6 +25,7 @@ import { WelcomePageComponent } from "./welcome-page/welcome-page.component";
         DbBrowserCardComponent,
         PositionPipe,
         PrimaryKeyPipe,
+        DbBrowserLinkComponent,
     ],
     imports: [
         AppRoutingModule,

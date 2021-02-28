@@ -1,3 +1,5 @@
 <div class="db-browser-workspace" >
     <db-browser-card *ngFor="let item of browserItems" [item]="item" (requiresLayout)="updateLayout()"></db-browser-card>
+
+    <db-browser-link *ngFor="let link of browserLinks" [link]="link"></db-browser-link>
 </div>

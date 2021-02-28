@@ -9,6 +9,7 @@ import {
 } from "./db-browser";
 import { DbEntity, DbProperties, DbValue } from "../database/models/db-entity";
 
+import { DbBrowserEntityPreview } from "./db-browser-entity-preview";
 import { DbBrowserForeignKey } from "./db-browser-foreign-key";
 import { DbBrowsingService } from "../database/services/db-browsing.service";
 import { DbTableName } from "../database/models/db-table-name";
@@ -22,13 +23,16 @@ export class DbBrowserEntity extends DbBrowser {
     private _properties: DbBrowserProperty[] | undefined;
 
     constructor(
+        readonly source: DbBrowser,
+        readonly previewItem: DbBrowserEntityPreview,
         readonly entity: DbEntity,
         private readonly browsingService: DbBrowsingService
     ) {
         super();
 
         this._foreignKeys = entity.table.foreignKeys.map(
-            (fk) => new DbBrowserForeignKey(entity, fk, this.browsingService)
+            (fk) =>
+                new DbBrowserForeignKey(this, entity, fk, this.browsingService)
         );
     }
 

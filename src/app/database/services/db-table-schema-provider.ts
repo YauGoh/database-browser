@@ -11,9 +11,9 @@ interface DbGetTablesOptions {
 
 export class Issue {
     constructor(
-        public readonly issueType: IssueType, 
-        public readonly tableName: DbTableName ) {        
-    }
+        public readonly issueType: IssueType,
+        public readonly tableName: DbTableName
+    ) {}
 }
 
 export enum IssueType {
@@ -22,57 +22,71 @@ export enum IssueType {
 }
 
 export abstract class DbTableSchemaProvider {
-    getTables(config: DbConfig, options: DbGetTablesOptions = {}): Promise<DbTableSchema[]> {
-        return Promise
-            .all([ this.getTableSchemas(), this.getForiegnKeys() ])
-            .then(result => {
-                const [tables, foreignKeys] = result; 
+    getTables(
+        config: DbConfig,
+        options: DbGetTablesOptions = {}
+    ): Promise<DbTableSchema[]> {
+        return Promise.all([
+            this.getTableSchemas(),
+            this.getForiegnKeys(),
+        ]).then((result) => {
+            const [tables, foreignKeys] = result;
 
-                return this.associateTableForeignKeys(tables, foreignKeys, options);
-            });
+            return this.associateTableForeignKeys(tables, foreignKeys, options);
+        });
     }
 
-    protected abstract getTableSchemas(): Promise<DbTableSchema[]>
+    protected abstract getTableSchemas(): Promise<DbTableSchema[]>;
 
-    protected abstract getForiegnKeys(): Promise<DbForeignKeyDetails[]>
+    protected abstract getForiegnKeys(): Promise<DbForeignKeyDetails[]>;
 
-    private associateTableForeignKeys(tables: DbTableSchema[], foreignKeys: DbForeignKeyDetails[], options: DbGetTablesOptions): DbTableSchema[] {
-        foreignKeys.forEach(fk => {
-            const to = tables.find(_ => _.name.schema == fk.to.schema && _.name.name == fk.to.name);
+    private associateTableForeignKeys(
+        tables: DbTableSchema[],
+        foreignKeys: DbForeignKeyDetails[],
+        options: DbGetTablesOptions
+    ): DbTableSchema[] {
+        foreignKeys.forEach((fk) => {
+            const to = tables.find(
+                (_) =>
+                    _.name.schema == fk.to.schema && _.name.name == fk.to.name
+            );
 
             if (!to) {
                 options.onIssue?.emit(
-                    new Issue(
-                        IssueType.CANT_FIND_FOREIGN_KEY_TO_TABLE, 
-                        fk.to));
+                    new Issue(IssueType.CANT_FIND_FOREIGN_KEY_TO_TABLE, fk.to)
+                );
 
                 return;
             }
 
-            const from = tables.find(_ => _.name.schema == fk.from.schema && _.name.name == fk.from.name);
+            const from = tables.find(
+                (_) =>
+                    _.name.schema == fk.from.schema &&
+                    _.name.name == fk.from.name
+            );
 
             if (!from) {
                 options.onIssue?.emit(
                     new Issue(
-                        IssueType.CANT_FIND_FOREIGN_KEY_FROM_TABLE, 
-                        fk.from))
+                        IssueType.CANT_FIND_FOREIGN_KEY_FROM_TABLE,
+                        fk.from
+                    )
+                );
 
                 return;
             }
 
-            from.addForeinKey(new DbTableForeignKey(
-                fk.name,
-                fk.key,
-                to));
+            from.addForeinKey(new DbTableForeignKey(fk.name, fk.key, to));
 
-            to.addForeinKey(new DbTableForeignKey(
-                fk.name,
-                fk.key.map(_ => _.invert()),
-                from
-            ))
+            to.addForeinKey(
+                new DbTableForeignKey(
+                    fk.name,
+                    fk.key.map((_) => _.invert()),
+                    from
+                )
+            );
         });
 
         return tables;
     }
 }
-

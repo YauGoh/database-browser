@@ -1,7 +1,8 @@
 export enum ColumnType {
     NUMBER,
     STRING,
-    DATE
+    DATE,
+    BOOLEAN,
 }
 
 export interface ColumnOptions {
@@ -12,8 +13,8 @@ export interface ColumnOptions {
 
 export class DbTableColumn {
     constructor(
-        public readonly name: string, 
-        public readonly type: ColumnType, 
-        public readonly options: ColumnOptions = {}) {
-    }
+        public readonly name: string,
+        public readonly type: ColumnType,
+        public readonly options: ColumnOptions = {}
+    ) {}
 }

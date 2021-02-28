@@ -1,5 +1,5 @@
 <mat-selection-list [multiple]="false">
     <mat-list-option *ngFor="let config of dbConfigs" [value]="config.name">
-      <a [routerLink]="['/db-browser', { name: config.name }]">{{config.name}}</a>
+      <a [routerLink]="['/db-browser', config.name]">{{config.name}}</a>
     </mat-list-option>
 </mat-selection-list>

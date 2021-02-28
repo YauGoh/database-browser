@@ -10,49 +10,42 @@ import { Injectable } from "@angular/core";
 @Injectable()
 export class SampleDbTableSchemaProvider extends DbTableSchemaProvider {
     protected getTableSchemas(): Promise<DbTableSchema[]> {
-        return Promise.resolve(
-            [
-                new DbTableSchema(
-                    new DbTableName("dbo", "users"),
-                    [
-                        new DbTableColumn("id", ColumnType.NUMBER)
-                    ],
-                    [
-                        new DbTableColumn("id", ColumnType.NUMBER),
-                        new DbTableColumn("departmentId", ColumnType.NUMBER),
-                        new DbTableColumn("name", ColumnType.STRING),
-                        new DbTableColumn("email", ColumnType.STRING)
-                    ]
-                ),
+        return Promise.resolve([
+            new DbTableSchema(
+                new DbTableName("dbo", "users"),
+                [new DbTableColumn("id", ColumnType.NUMBER)],
+                [
+                    new DbTableColumn("id", ColumnType.NUMBER),
+                    new DbTableColumn("departmentId", ColumnType.NUMBER),
+                    new DbTableColumn("name", ColumnType.STRING),
+                    new DbTableColumn("email", ColumnType.STRING),
+                ]
+            ),
 
-                new DbTableSchema(
-                    new DbTableName("dbo", "departments"),
-                    [
-                        new DbTableColumn("id", ColumnType.NUMBER)
-                    ],
-                    [
-                        new DbTableColumn("name", ColumnType.STRING)
-                    ]
-                )
-            ]
-        );
+            new DbTableSchema(
+                new DbTableName("dbo", "departments"),
+                [new DbTableColumn("id", ColumnType.NUMBER)],
+                [
+                    new DbTableColumn("id", ColumnType.NUMBER),
+                    new DbTableColumn("name", ColumnType.STRING),
+                ]
+            ),
+        ]);
     }
 
     protected getForiegnKeys(): Promise<DbForeignKeyDetails[]> {
-        return Promise.resolve(
-            [
-                new DbForeignKeyDetails(
-                    "fk_users_departments",
-                    new DbTableName("dbo", "users"),
-                    new DbTableName("dbo", "departments"),
-                    [
-                        new DbTableForeignKeyMap(
-                            new DbTableColumn("departmentId", ColumnType.NUMBER),
-                            new DbTableColumn("id", ColumnType.NUMBER)
-                        )
-                    ]
-                )
-            ]
-        )
+        return Promise.resolve([
+            new DbForeignKeyDetails(
+                "fk_users_departments",
+                new DbTableName("dbo", "users"),
+                new DbTableName("dbo", "departments"),
+                [
+                    new DbTableForeignKeyMap(
+                        new DbTableColumn("departmentId", ColumnType.NUMBER),
+                        new DbTableColumn("id", ColumnType.NUMBER)
+                    ),
+                ]
+            ),
+        ]);
     }
 }

@@ -1,0 +1,28 @@
+<div class="db-browser-card" [ngStyle]="rectangle | position">
+    <mat-card *ngIf="table">
+        <mat-card-title>
+            {{table.name.schema}}.{{table.name.name}}
+            <button mat-icon-button color="primary" (click)="expandTable()">
+                <mat-icon>home</mat-icon>
+            </button>
+        </mat-card-title>
+        <mat-card-subtitle>{{table.name.schema}}</mat-card-subtitle>        
+    </mat-card>
+    <mat-card *ngIf="entity">
+        <mat-card-title>{{entity.preview | primaryKey}}</mat-card-title>
+        <mat-card-subtitle>{{entity.table.schema}}.{{entity.table.name}}</mat-card-subtitle>
+        
+        <table>
+            <tbody>
+                <tr *ngFor="let p of entity.properties">
+                    <td>{{p.name}}</td>
+                    <td>{{p.value}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </mat-card>
+
+    <button mat-flat-button *ngIf="foreignKey" (click)="toggleExpandForeignKey()">{{foreignKey.name}}</button>
+
+    <button mat-flat-button *ngIf="preview" (click)="togglePreviewExpand()">{{preview.preview | primaryKey}}</button>
+</div>

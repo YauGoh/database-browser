@@ -1,30 +1,30 @@
-import * as fs from 'fs';
-import * as path from 'path';
+import * as fs from "fs";
+import * as path from "path";
 import * as vscode from "vscode";
 
 export class AngularWebview {
+    private panel: vscode.WebviewPanel;
 
-    private  panel:vscode.WebviewPanel;
-    
     constructor(
-            title:string,
-            private htmlFilename: string, 
-            private column: vscode.ViewColumn, 
-            private context: vscode.ExtensionContext) {
-
+        title: string,
+        private htmlFilename: string,
+        private column: vscode.ViewColumn,
+        private context: vscode.ExtensionContext
+    ) {
         const dist = vscode.Uri.file(path.join(context.extensionPath, "dist"));
 
-        const options : vscode.WebviewOptions = {
+        const options: vscode.WebviewOptions = {
             enableScripts: true,
 
-            localResourceRoots: [dist]
-        }
+            localResourceRoots: [dist],
+        };
 
         this.panel = vscode.window.createWebviewPanel(
-            "angular", 
-            title, 
+            "angular",
+            title,
             column,
-            options);
+            options
+        );
 
         this.panel.webview.html = this.getHtml();
     }
@@ -33,24 +33,22 @@ export class AngularWebview {
         this.panel.reveal(this.column);
     }
 
-    private getHtml():string {
-
+    private getHtml(): string {
         const dist = vscode.Uri.file(
-            path.join(
-                this.context.extensionPath, 
-                "dist"));
+            path.join(this.context.extensionPath, "dist")
+        );
 
         const baseUri = this.panel.webview.asWebviewUri(dist);
 
-        const htmlFile = 
-            path.join(
-                this.context.extensionPath, 
-                "dist",
-                this.htmlFilename);
+        const htmlFile = path.join(
+            this.context.extensionPath,
+            "dist",
+            this.htmlFilename
+        );
 
         const html = fs
             .readFileSync(htmlFile, { encoding: "utf8" })
-            .replace('<base href="/"', `<base href="${String(baseUri)}/"`)
+            .replace('<base href="/"', `<base href="${String(baseUri)}/"`);
 
         return html;
     }

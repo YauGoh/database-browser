@@ -4,8 +4,9 @@ import { DbTableName } from "./db-table-name";
 
 export class DbForeignKeyDetails {
     constructor(
-        public readonly name: string, 
-        public readonly from: DbTableName, 
-        public readonly to: DbTableName, 
-        public readonly key: DbTableForeignKeyMap[]) {}
+        public readonly name: string,
+        public readonly from: DbTableName,
+        public readonly to: DbTableName,
+        public readonly key: DbTableForeignKeyMap[]
+    ) {}
 }

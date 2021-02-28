@@ -1,9 +1,9 @@
 export enum DbType {
-    SAMPLE = "Sample"
+    SAMPLE = "Sample",
 }
 
 export interface DbConfig {
-    name: string,
-    dbType: DbType,
-    connectionString: string
+    name: string;
+    dbType: DbType;
+    connectionString: string;
 }

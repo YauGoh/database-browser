@@ -1,3 +1,4 @@
+import { AppModule } from "../app.module";
 import { DbBrowserLayoutService } from "./db-browser-layout.service";
 import { TestBed } from "@angular/core/testing";
 
@@ -6,7 +7,7 @@ describe("DbBrowserLayoutService", () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            providers: [DbBrowserLayoutService],
+            imports: [AppModule],
         });
         service = TestBed.inject(DbBrowserLayoutService);
     });

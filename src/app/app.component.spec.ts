@@ -1,17 +1,11 @@
 import { AppComponent } from "./app.component";
-import { DatabaseModule } from "./database/database.module";
-import { DbConfigsComponent } from "./components/db-configs/db-configs.component";
-import { MaterialModule } from "./material/material.module";
-import { NotifyService } from "./notify.service";
-import { RouterTestingModule } from "@angular/router/testing";
+import { AppModule } from "./app.module";
 import { TestBed } from "@angular/core/testing";
 
 describe("AppComponent", () => {
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [DatabaseModule, MaterialModule, RouterTestingModule],
-            declarations: [AppComponent, DbConfigsComponent],
-            providers: [NotifyService],
+            imports: [AppModule],
         }).compileComponents();
     });
 

@@ -45,11 +45,7 @@ export class Point {
 }
 
 export class Link {
-    constructor(
-        public readonly from: Point,
-        public readonly to: Point,
-        public readonly linkCollection: Link[]
-    ) {}
+    constructor(public readonly from: Point, public readonly to: Point, public readonly linkCollection: Link[]) {}
 
     public get a(): Point {
         return this.from.relative(this.rectangle);
@@ -94,6 +90,22 @@ export class Link {
 export class Rectangle {
     constructor(public readonly location: Point, public readonly size: Size) {}
 
+    public get left(): number {
+        return this.location.x;
+    }
+
+    public get right(): number {
+        return this.location.x + this.size.width;
+    }
+
+    public get top(): number {
+        return this.location.y;
+    }
+
+    public get bottom(): number {
+        return this.location.y + this.size.height;
+    }
+
     public static from(from: Point, to: Point): Rectangle {
         const point = new Point(Math.min(from.x, to.x), Math.min(from.y, to.y));
 
@@ -101,15 +113,19 @@ export class Rectangle {
 
         return new Rectangle(point, size);
     }
+
+    public overlaps(other: Rectangle): boolean {
+        return (
+            ((this.location.x >= other.left && this.location.x <= other.right) || (other.location.x >= this.left && other.location.x <= this.right)) &&
+            ((this.location.y >= other.top && this.location.y <= other.bottom) || (other.location.y >= this.top && other.location.y <= this.bottom))
+        );
+    }
 }
 
 export abstract class DbBrowser {
     public link: Link | undefined = undefined;
 
-    public rectangle: Rectangle = new Rectangle(
-        new Point(0, 0),
-        new Size(0, 0)
-    );
+    public rectangle: Rectangle = new Rectangle(new Point(0, 0), new Size(0, 0));
     public isVisible: boolean = true;
 
     abstract getRequiredRectangle(start: Point): Rectangle;
@@ -119,8 +135,6 @@ export abstract class DbBrowser {
     }
 
     public get linkFrom(): Point {
-        return this.rectangle.location
-            .offsetY(previewHeight * 0.5)
-            .offsetX(width);
+        return this.rectangle.location.offsetY(previewHeight * 0.5).offsetX(width);
     }
 }

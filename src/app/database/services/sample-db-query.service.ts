@@ -21,7 +21,7 @@ interface DataSource {
     departments: Department[];
 }
 
-const data: DataSource = {
+export const sampleTestData: DataSource = {
     users: [
         {
             id: 1,
@@ -111,7 +111,8 @@ const data: DataSource = {
 @Injectable()
 export class SampleDbQueryService implements DbQueryService {
     select(query: DbQuery): Promise<DbProperties[]> {
-        let array: any[] = data[query.from.name.name as keyof DataSource];
+        let array: any[] =
+            sampleTestData[query.from.name.name as keyof DataSource];
 
         if (query.where) {
             array = array.filter((_) => {

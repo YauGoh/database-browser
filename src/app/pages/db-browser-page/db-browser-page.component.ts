@@ -88,16 +88,12 @@ export class DbBrowserPageComponent implements OnInit {
     }
 
     updateLayout() {
-        console.log("updateLayout", this.tables);
-
         if (!this.tables) return;
 
         const layoutResult = this.layoutService.layout(this.tables);
 
         this.browserItems = layoutResult.items;
         this.browserLinks = layoutResult.links;
-
-        console.log("updated", this.browserItems);
     }
 
     async onTableExpanded(table: DbTableSchema): Promise<void> {

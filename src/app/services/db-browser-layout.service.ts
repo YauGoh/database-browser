@@ -1,10 +1,4 @@
-import {
-    DbBrowser,
-    Link,
-    Point,
-    previewHeight,
-    rowHeight,
-} from "../models/db-browser";
+import { DbBrowser, Link, Point, previewHeight, rowHeight } from "../models/db-browser";
 
 import { DbBrowserEntity } from "../models/db-browser-entity";
 import { DbBrowserTable } from "../models/db-browser-table";
@@ -18,9 +12,7 @@ export const width = 320;
 export class DbBrowserLayoutService {
     constructor() {}
 
-    public layout(
-        tables: DbBrowserTable[]
-    ): { items: DbBrowser[]; links: Link[] } {
+    public layout(tables: DbBrowserTable[]): { items: DbBrowser[]; links: Link[] } {
         const columns: DbBrowser[][] = [];
 
         let column = 0;
@@ -30,9 +22,7 @@ export class DbBrowserLayoutService {
         return this.layoutColumns(columns);
     }
 
-    layoutColumns(
-        columns: DbBrowser[][]
-    ): { items: DbBrowser[]; links: Link[] } {
+    layoutColumns(columns: DbBrowser[][]): { items: DbBrowser[]; links: Link[] } {
         let point = new Point(20, verticalSpacing);
 
         const items: DbBrowser[] = [];
@@ -44,14 +34,10 @@ export class DbBrowserLayoutService {
             if (i === 0) {
                 point = this.layoutColumnOfTables(column, point, items);
             } else {
-                links.push(
-                    ...this.layoutColumnOfEntities(column, point, items)
-                );
+                links.push(...this.layoutColumnOfEntities(column, point, items));
             }
 
-            point = point
-                .withY(verticalSpacing)
-                .offsetX(width + horizontalSpacing);
+            point = point.withY(verticalSpacing).offsetX(width + horizontalSpacing);
 
             i++;
         }
@@ -59,11 +45,7 @@ export class DbBrowserLayoutService {
         return { items, links };
     }
 
-    private layoutColumnOfTables(
-        column: DbBrowser[],
-        point: Point,
-        flattened: DbBrowser[]
-    ) {
+    private layoutColumnOfTables(column: DbBrowser[], point: Point, flattened: DbBrowser[]) {
         for (const item of column) {
             const table: DbBrowserTable = item as DbBrowserTable;
 
@@ -83,18 +65,12 @@ export class DbBrowserLayoutService {
                 }
             }
 
-            point = point.offsetY(
-                table.rectangle.size.height + verticalSpacing
-            );
+            point = point.offsetY(table.rectangle.size.height + verticalSpacing);
         }
         return point;
     }
 
-    private layoutColumnOfEntities(
-        column: DbBrowser[],
-        point: Point,
-        flattened: DbBrowser[]
-    ): Link[] {
+    private layoutColumnOfEntities(column: DbBrowser[], point: Point, flattened: DbBrowser[]): Link[] {
         const links: Link[] = [];
 
         for (const item of column) {
@@ -105,17 +81,11 @@ export class DbBrowserLayoutService {
             entity.rectangle = entity.getRequiredRectangle(point);
             flattened.push(entity);
 
-            const link = new Link(
-                entity.previewItem.linkFrom,
-                entity.linkTo,
-                links
-            );
+            const link = new Link(entity.previewItem.linkFrom, entity.linkTo, links);
 
             links.push(link);
 
-            let point2 = point.offsetY(
-                entity.getHeaderHeight() + entity.getDataHeight()
-            );
+            let point2 = point.offsetY(entity.getHeaderHeight() + entity.getDataHeight());
 
             for (const fk of entity.foreignKeys) {
                 fk.rectangle = fk.getRequiredRectangle(point2);
@@ -125,9 +95,7 @@ export class DbBrowserLayoutService {
                     let point3 = point2.offsetY(previewHeight);
 
                     for (const preview of fk.previews) {
-                        preview.rectangle = preview.getRequiredRectangle(
-                            point3
-                        );
+                        preview.rectangle = preview.getRequiredRectangle(point3);
                         flattened.push(preview);
 
                         point3 = point3.offsetY(preview.rectangle.size.height);
@@ -137,19 +105,13 @@ export class DbBrowserLayoutService {
                 point2 = point2.offsetY(fk.rectangle.size.height);
             }
 
-            point = point.offsetY(
-                entity.rectangle.size.height + verticalSpacing
-            );
+            point = point.offsetY(entity.rectangle.size.height + verticalSpacing);
         }
 
         return links;
     }
 
-    origaniseIntoColumns(
-        column: number,
-        columns: DbBrowser[][],
-        tables: DbBrowserTable[]
-    ) {
+    origaniseIntoColumns(column: number, columns: DbBrowser[][], tables: DbBrowserTable[]) {
         if (columns.length == column) {
             columns.push([]);
         }
@@ -160,17 +122,11 @@ export class DbBrowserLayoutService {
             this.columniseEntities(
                 column + 1,
                 columns,
-                t.previews
-                    .filter((p) => p.isExpended && p.entity)
-                    .map((p) => p.entity!)
+                t.previews.filter((p) => p.isExpended && p.entity).map((p) => p.entity!)
             );
         });
     }
-    columniseEntities(
-        column: number,
-        columns: DbBrowser[][],
-        entities: DbBrowserEntity[]
-    ) {
+    columniseEntities(column: number, columns: DbBrowser[][], entities: DbBrowserEntity[]) {
         if (columns.length == column) {
             columns.push([]);
         }
@@ -184,9 +140,7 @@ export class DbBrowserLayoutService {
                 this.columniseEntities(
                     column + 1,
                     columns,
-                    fk.previews
-                        .filter((p) => p.isExpended && p.entity)
-                        .map((p) => p.entity!)
+                    fk.previews.filter((p) => p.isExpended && p.entity).map((p) => p.entity!)
                 );
             });
         });
